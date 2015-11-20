@@ -2,6 +2,11 @@ package jannis.pixlengine.world;
 
 import jannis.pixlengine.PixlEngine;
 
+/**
+ * A world class to contain all world info.
+ * 
+ * @author jeyj0
+ */
 public class World {
 
 	/**
