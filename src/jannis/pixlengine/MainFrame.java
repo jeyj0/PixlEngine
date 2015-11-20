@@ -11,43 +11,51 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * @author Jannis and Nicolas
+ * Main frame to display the whole program in
+ * 
+ * @author jeyj0
  */
 public class MainFrame extends JFrame {
-	
-	private JPanel panel;
-	
+
 	/**
-	 * General constructor
+	 * Panel containing icons from world
+	 */
+	private JPanel panel;
+
+	/**
+	 * Instantiates a new frame
+	 * 
+	 * @param title
+	 *            The title of the frame
 	 */
 	public MainFrame(String title) {
 		super();
-		
+
 		// ends java program on window close event
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		// sets the frame's title
-		this.setTitle(title);
+		setTitle(title);
 
 		// set bounds
-		this.setBounds(500, 200, 800, 450);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setResizable(false);
-		
-		// make most important windows eva
-		this.setAlwaysOnTop(true);
-		
-		// Make background black
+		setBounds(500, 200, 800, 450);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setResizable(false);
+
+		// Instantiate panel and make background black
 		panel = new JPanel();
 		panel.setBounds(0, 0, 800, 450);
 		panel.setBackground(Color.BLACK);
 		getContentPane().add(panel);
 	}
-	
+
+	/**
+	 * Test-method to show some things when called
+	 */
 	public void showStuff() {
 		Field f = new Field();
 		ArrayList<ImageIcon> icons = f.getIcons();
-		
+
 		for (ImageIcon icon : icons) {
 			JLabel imgLabel = new JLabel();
 			imgLabel.setIcon(icon);
