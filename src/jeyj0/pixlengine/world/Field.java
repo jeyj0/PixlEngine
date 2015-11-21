@@ -1,10 +1,11 @@
-package jannis.pixlengine.world;
+package jeyj0.pixlengine.world;
 
-import jannis.pixlengine.objects.Object;
 
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+
+import jeyj0.pixlengine.objects.Object;
 
 /**
  * A class to contain all info about a field (also all objects on it)
@@ -54,8 +55,8 @@ public class Field {
 	 * @param object
 	 *            The object to add
 	 */
-	public void addObject(ArrayList<Object> object) {
-		objects = object;
+	public void addObject(Object object) {
+		objects.add(object);
 	}
 
 	/**

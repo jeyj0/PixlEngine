@@ -1,6 +1,6 @@
-package jannis.pixlengine.world;
+package jeyj0.pixlengine.world;
 
-import jannis.pixlengine.PixlEngine;
+import jeyj0.pixlengine.PixlEngine;
 
 /**
  * A world class to contain all world info.
@@ -26,9 +26,9 @@ public class World {
 		chunks = new Chunk[x][y];
 
 		// Instantiate all chunks
-		for (Chunk[] chunk_i : chunks) {
-			for (Chunk chunk : chunk_i) {
-				chunk = new Chunk();
+		for (int xi = 0; xi < x; xi++) {
+			for (int yi = 0; yi < y; yi++) {
+				chunks[xi][yi] = new Chunk();
 			}
 		}
 	}
@@ -47,6 +47,15 @@ public class World {
 		if (x < 0 || y < 0 || x >= chunks.length || y >= chunks[x].length)
 			return null;
 		return chunks[x][y];
+	}
+
+	/**
+	 * All chunks in this world
+	 * 
+	 * @return Chunks in this world
+	 */
+	public Chunk[][] getChunks() {
+		return chunks;
 	}
 
 	/**

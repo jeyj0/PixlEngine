@@ -1,6 +1,5 @@
-package jannis.pixlengine;
+package jeyj0.pixlengine;
 
-import jannis.pixlengine.world.Field;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -10,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import jeyj0.pixlengine.world.Chunk;
+import jeyj0.pixlengine.world.Field;
+
 /**
  * Main frame to display the whole program in
  * 
@@ -18,9 +20,19 @@ import javax.swing.JPanel;
 public class MainFrame extends JFrame {
 
 	/**
+	 * Serial version ID needed for java... Just leave this here :P
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Panel containing icons from world
 	 */
 	private JPanel panel;
+
+	/**
+	 * PixlEngine Object running this frame
+	 */
+	private PixlEngine engine;
 
 	/**
 	 * Instantiates a new frame
@@ -28,8 +40,10 @@ public class MainFrame extends JFrame {
 	 * @param title
 	 *            The title of the frame
 	 */
-	public MainFrame(String title) {
+	public MainFrame(PixlEngine engine, String title) {
 		super();
+
+		this.engine = engine;
 
 		// ends java program on window close event
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,8 +67,20 @@ public class MainFrame extends JFrame {
 	 * Test-method to show some things when called
 	 */
 	public void showStuff() {
-		Field f = new Field();
-		ArrayList<ImageIcon> icons = f.getIcons();
+		ArrayList<ImageIcon> icons = new ArrayList<ImageIcon>();
+		Chunk[][] chunks = engine.getWorldInstance().getChunks();
+
+		for (Chunk[] chunks_i : chunks) {
+			for (Chunk c : chunks_i) {
+				for (Field[] fields_i : c.getFields()) {
+					for (Field f : fields_i) {
+						if (f.getIcons().size() > 0)
+							System.out.println(">0 Objects");
+						icons.addAll(f.getIcons());
+					}
+				}
+			}
+		}
 
 		for (ImageIcon icon : icons) {
 			JLabel imgLabel = new JLabel();

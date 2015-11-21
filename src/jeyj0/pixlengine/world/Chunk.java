@@ -1,6 +1,6 @@
-package jannis.pixlengine.world;
+package jeyj0.pixlengine.world;
 
-import jannis.pixlengine.PixlEngine;
+import jeyj0.pixlengine.PixlEngine;
 
 /**
  * Class to contain chunk info.
@@ -21,9 +21,9 @@ public class Chunk {
 		fields = new Field[PixlEngine.getChunkSize()][PixlEngine.getChunkSize()];
 
 		// Instantiates all Fields in the chunk
-		for (Field[] field_i : fields) {
-			for (Field field : field_i) {
-				field = new Field();
+		for (int xi = 0; xi < PixlEngine.getChunkSize(); xi++) {
+			for (int yi = 0; yi < PixlEngine.getChunkSize(); yi++) {
+				fields[xi][yi] = new Field();
 			}
 		}
 	}
@@ -42,6 +42,15 @@ public class Chunk {
 				|| y >= PixlEngine.getChunkSize())
 			return null;
 		return fields[x][y];
+	}
+
+	/**
+	 * All fields in this chunk
+	 * 
+	 * @return Fields in this chunk
+	 */
+	public Field[][] getFields() {
+		return fields;
 	}
 
 }

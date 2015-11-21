@@ -1,8 +1,11 @@
-package jannis.pixlengine.objects;
+package jeyj0.pixlengine.objects;
 
-import jannis.pixlengine.PixlEngine;
+
 
 import javax.swing.ImageIcon;
+
+import jeyj0.pixlengine.PixlEngine;
+
 
 /**
  * A class for any object in the world

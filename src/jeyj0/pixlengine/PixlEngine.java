@@ -1,6 +1,6 @@
-package jannis.pixlengine;
+package jeyj0.pixlengine;
 
-import jannis.pixlengine.world.World;
+import jeyj0.pixlengine.world.World;
 
 /**
  * The main class for the a new engine.
@@ -28,7 +28,7 @@ public class PixlEngine {
 	/**
 	 * World-object the engine is currently using to render
 	 */
-	private static World world;
+	private World world;
 
 	/**
 	 * The frame the engine displays everything in
@@ -55,9 +55,9 @@ public class PixlEngine {
 		PixlEngine.projectName = projectName;
 		PixlEngine.resourcePath = resourcePath;
 		PixlEngine.chunkSize = chunkSize;
-		PixlEngine.world = new World(worldX, worldY);
-
-		frame = new MainFrame(PixlEngine.projectName);
+		
+		world = new World(worldX, worldY);
+		frame = new MainFrame(this, PixlEngine.projectName);
 		frame.setVisible(true);
 	}
 
@@ -93,8 +93,15 @@ public class PixlEngine {
 	 * 
 	 * @return world
 	 */
-	public static World getWorldInstance() {
+	public World getWorldInstance() {
 		return world;
+	}
+
+	/**
+	 * Render world as it is to calling time
+	 */
+	public void render() {
+		frame.showStuff();
 	}
 
 }

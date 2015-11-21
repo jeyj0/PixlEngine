@@ -1,4 +1,4 @@
-package jannis.pixlengine.entities;
+package jeyj0.pixlengine.entities;
 
 /**
  * General entity class. Entities are movable objects not bound to integer
