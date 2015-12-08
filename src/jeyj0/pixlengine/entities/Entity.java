@@ -1,98 +1,56 @@
 package jeyj0.pixlengine.entities;
 
 /**
- * General entity class. Entities are movable objects not bound to integer
- * coordinates.
+ * A class for all kind of entities
  * 
  * @author jeyj0
  */
-public class Entity {
+public abstract class Entity {
 
-	/**
-	 * The horizontal coordinate relative to the world the entity is in
-	 */
-	protected double xCoord;
+	private double xPos;
+	private double yPos;
+	private int width;
+	private int height;
 
-	/**
-	 * The vertical coordinate relative to the world the entity is in
-	 */
-	protected double yCoord;
-
-	/**
-	 * Instantiates a new Entity-object
-	 * 
-	 * @param x
-	 *            The horizontal position
-	 * @param y
-	 *            The vertical position
-	 */
-	public Entity(double x, double y) {
-		this.setPosX(x);
-		this.setPosY(y);
+	public Entity(double xPos, double yPos, int width, int height) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.width = width;
+		this.height = height;
 	}
 
-	/**
-	 * Instantiates a new Entity-object
-	 * 
-	 * @param x
-	 *            The horizontal position
-	 * @param y
-	 *            The vertical position
-	 */
-	public Entity(int x, int y) {
-		this.setPosX((double) x);
-		this.setPosY((double) y);
+	protected void addX(double toAdd) {
+		xPos = xPos + toAdd;
+	}
+	
+	protected void addY(double toAdd) {
+		yPos = yPos + toAdd;
+	}
+	
+	public double getX() {
+		return xPos;
 	}
 
-	/**
-	 * Instantiates a new Entity-object
-	 * 
-	 * @param x
-	 *            The horizontal position
-	 * @param y
-	 *            The vertical position
-	 */
-	public Entity(float x, float y) {
-		this.setPosX((double) x);
-		this.setPosY((double) y);
+	public double getY() {
+		return yPos;
 	}
 
-	/**
-	 * The horizontal position of this entity, relative to the world
-	 * 
-	 * @return x-coordinate
-	 */
-	public double getPosX() {
-		return xCoord;
+	public int getWidth() {
+		return width;
 	}
 
-	/**
-	 * Sets the horizontal position of this entity, relative to the world
-	 * 
-	 * @param xCoord
-	 *            X-coordinate to set
-	 */
-	public void setPosX(double xCoord) {
-		this.xCoord = xCoord;
+	public int getHeight() {
+		return height;
 	}
 
-	/**
-	 * The vertical position of this entity, relative to the world
-	 * 
-	 * @return y-coordinate
-	 */
-	public double getPosY() {
-		return yCoord;
+	public double[] getBounds() {
+		return new double[] { xPos, yPos, (double) width, (double) height };
 	}
 
-	/**
-	 * Sets the vertical position of this entity, relative to the world
-	 * 
-	 * @param yCoord
-	 *            Y-coordinate to set
-	 */
-	public void setPosY(double yCoord) {
-		this.yCoord = yCoord;
+	public abstract void tick();
+
+	public int getImageId() {
+		return -1;
 	}
 
 }

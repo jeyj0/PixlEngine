@@ -1,90 +1,143 @@
 package jeyj0.pixlengine.world;
 
-import jeyj0.pixlengine.PixlEngine;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import jeyj0.pixlengine.entities.Entity;
+import jeyj0.pixlengine.tiles.Tile;
 
 /**
- * A world class to contain all world info.
+ * <pre>
+ * Coordinate-system:
  * 
- * @author jeyj0
+ *  .  . -2  .  . 
+ *  .  . -1  .  . 
+ * -2 -1  0  1  2 
+ *  .  .  1  .  . 
+ *  .  .  2  .  .
+ * </pre>
  */
 public class World {
 
-	/**
-	 * Contains all chunks in the World-instance
-	 */
-	private Chunk[][] chunks;
+	private ArrayList<Tile> tiles;
+	private ArrayList<Entity> entities;
 
-	/**
-	 * Instantiates a new World-Object
+	public World() {
+		tiles = new ArrayList<Tile>();
+		entities = new ArrayList<Entity>();
+	}
+
+	public ArrayList<Tile> getTilesInRect(double x, double y, int width,
+			int height) {
+		ArrayList<Tile> list = new ArrayList<Tile>();
+
+		Iterator<Tile> it = tiles.iterator();
+		Tile t;
+		while (it.hasNext()) {
+			t = it.next();
+			if (t.getX() >= x && t.getX() < x + width && t.getY() >= y
+					&& t.getY() < y + height)
+				list.add(t);
+		}
+
+		return list;
+	}
+
+	/*
+	 * public void setTileAt(int x, int y, Tile t) { Iterator<Tile> it =
+	 * tiles.iterator(); Tile t; while (it.hasNext()) { t = it.next(); if
+	 * (t.getX() == x && t.getY() == y) { return; } }
 	 * 
-	 * @param x
-	 *            Amount of horizontal chunks
-	 * @param y
-	 *            Amount of vertical chunks
+	 * 
+	 * }
 	 */
-	public World(int x, int y) {
-		chunks = new Chunk[x][y];
 
-		// Instantiate all chunks
-		for (int xi = 0; xi < x; xi++) {
-			for (int yi = 0; yi < y; yi++) {
-				chunks[xi][yi] = new Chunk();
+	/*
+	 * public Tile getTileAt(int x, int y) { Iterator<Field> it =
+	 * fields.iterator(); Field f; while (it.hasNext()) { f = it.next(); if
+	 * (f.getX() == x && f.getY() == y) return f.getTile(); }
+	 * 
+	 * return null; }
+	 */
+
+	public void addEntity(Entity e) {
+		entities.add(e);
+	}
+	
+	public ArrayList<Entity> getAllEntities() {
+		return entities;
+	}
+	
+	public boolean hasEntity(Entity e) {
+		return entities.contains(e);
+	}
+
+	public ArrayList<Entity> getEntitiesInRect(double x, double y, int width,
+			int height) {
+		ArrayList<Entity> list = new ArrayList<Entity>();
+		Entity e;
+		Iterator<Entity> it = entities.iterator();
+		while (it.hasNext()) {
+			e = it.next();
+
+			// if any of the entities corners is in the rectangle...
+			boolean is_left_x = e.getX() >= x && e.getX() < x + width;
+			boolean is_right_x = e.getX() + e.getWidth() >= x && e.getX() + e.getWidth() < x + width;
+			boolean is_some_x = is_left_x || is_right_x;
+			
+			boolean is_left_y = e.getY() >= y && e.getY() < y + height;
+			boolean is_right_y = e.getY() + e.getHeight() >= y && e.getY() + e.getHeight() < y + height;
+			boolean is_some_y = is_left_y || is_right_y;
+
+			if (is_some_x && is_some_y) {
+				// ... add it to the list
+				list.add(e);
 			}
 		}
+
+		return entities;
+		// return list;
 	}
 
-	/**
-	 * Returns the chunk for the given chunk coordinates
-	 * 
-	 * @param x
-	 *            The chunk's horizontal chunk coordinate
-	 * @param y
-	 *            The chunk's vertical chunk coordinate
-	 * @return The chunk at the given chunk coordinates or null on invalid
-	 *         argument
-	 */
-	public Chunk getChunk(int x, int y) {
-		if (x < 0 || y < 0 || x >= chunks.length || y >= chunks[x].length)
-			return null;
-		return chunks[x][y];
-	}
+	class Field {
 
-	/**
-	 * All chunks in this world
-	 * 
-	 * @return Chunks in this world
-	 */
-	public Chunk[][] getChunks() {
-		return chunks;
-	}
+		private int x;
+		private int y;
+		private Tile tile;
 
-	/**
-	 * Returns the field at the given location
-	 * 
-	 * @param x
-	 *            The horizontal coordinate
-	 * @param y
-	 *            The vertical coordinate
-	 * @return The field at the given position or null on invalid argument
-	 */
-	public Field getField(int x, int y) {
-		if (x < 0 || y < 0)
-			return null;
+		public Field(int x, int y, Tile t) {
+			this.x = x;
+			this.y = y;
+			this.tile = t;
+		}
 
-		// get the chunk x-coordinate
-		int chunkX = (x - x % PixlEngine.getChunkSize())
-				/ PixlEngine.getChunkSize();
-		if (chunkX >= chunks.length)
-			return null;
+		public Field(int x, int y) {
+			this(x, y, null);
+		}
 
-		// get the chunk y-coordinate
-		int chunkY = (y - y % PixlEngine.getChunkSize())
-				/ PixlEngine.getChunkSize();
-		if (chunkY >= chunks[chunkX].length)
-			return null;
+		public int getX() {
+			return x;
+		}
 
-		return chunks[chunkX][chunkY].getField(x % PixlEngine.getChunkSize(), y
-				% PixlEngine.getChunkSize());
+		public int getY() {
+			return y;
+		}
+
+		public boolean setTile(Tile t) {
+			if (tile != null)
+				return false;
+			this.tile = t;
+			return true;
+		}
+
+		public Tile getTile() {
+			return tile;
+		}
+
+		public void removeTile() {
+			this.tile = null;
+		}
+
 	}
 
 }
