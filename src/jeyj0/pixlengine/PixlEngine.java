@@ -13,8 +13,8 @@ import javax.swing.JFrame;
 import jeyj0.pixlengine.entities.Entity;
 import jeyj0.pixlengine.entities.Mob;
 import jeyj0.pixlengine.in.InputHandler;
-import jeyj0.pixlengine.tiles.Tile;
 import jeyj0.pixlengine.world.World;
+import jeyj0.pixlengine.world.World.TileField;
 
 /**
  * Main Engine class. Use this to run a (new) game.
@@ -115,7 +115,7 @@ public class PixlEngine extends Canvas implements Runnable {
 	 * followed around. If not set, the offset must be defined in another way.
 	 */
 	private Mob player;
-	
+
 	/**
 	 * Input handler to use
 	 */
@@ -315,16 +315,17 @@ public class PixlEngine extends Canvas implements Runnable {
 													// background-color
 			}
 		}
-		
+
 		/*
 		 * Render tiles
 		 */
-		for (Tile t : getWorld().getTilesInRect(xOffset, yOffset, screenFieldWidth, screenFieldHeight)) {
-			LoadedImage loadedImage = imageLoader
-					.getLoadedImage(t.getImageId());
+		for (TileField f : getWorld().getFieldsInRect(xOffset, yOffset,
+				screenFieldWidth, screenFieldHeight)) {
+			LoadedImage loadedImage = imageLoader.getLoadedImage(f.getTile()
+					.getImageId());
 
-			int startX = (int) ((t.getX() - xOffset) * pxPerField);
-			int startY = (int) ((t.getY() - yOffset) * pxPerField);
+			int startX = (int) ((f.getX() - xOffset) * pxPerField);
+			int startY = (int) ((f.getY() - yOffset) * pxPerField);
 
 			// TODO: edit this to actually take only the needed part of the
 			// image!!! Note: startX and startY are relative to the screen, not
@@ -344,10 +345,6 @@ public class PixlEngine extends Canvas implements Runnable {
 			int startX = (int) ((e.getX() - xOffset) * pxPerField);
 			int startY = (int) ((e.getY() - yOffset) * pxPerField);
 
-			// TODO: edit this to actually take only the needed part of the
-			// image!!! Note: startX and startY are relative to the screen, not
-			// to the loadedImage
-			loadedImage = loadedImage.getInterval(0, 0, -1, -1);
 			renderLoadedImage(loadedImage, startX, startY);
 		}
 
@@ -375,15 +372,15 @@ public class PixlEngine extends Canvas implements Runnable {
 		// if x or y is negative
 		if (x < 0 || y < 0)
 			return false;
-		
+
 		// calculate the index in the pixels array
 		int index = y * xPixels + x;
-		
+
 		// if a line was added by the x OR the index is too high for the image
 		if ((index - index % xPixels) / xPixels > y || index >= pixels.length)
 			return false;
-		
-		if (overwrite)
+
+		if (overwrite || (colorValue >> 24 & 0xff) == 0xff)
 			pixels[index] = colorValue;
 		else
 			pixels[index] = mergeColors(pixels[index], colorValue);
@@ -503,12 +500,20 @@ public class PixlEngine extends Canvas implements Runnable {
 	public Mob getPlayer() {
 		return player;
 	}
-	
+
 	/**
 	 * @return The used InputHandler for this game
 	 */
 	public InputHandler getInputHandler() {
 		return inputHandler;
+	}
+
+	/**
+	 * @return The amount of screen pixels that make up one game pixel in the
+	 *         width and height
+	 */
+	public int getScaleFactor() {
+		return scaleFactor;
 	}
 
 }
