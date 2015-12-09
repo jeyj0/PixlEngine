@@ -1,6 +1,5 @@
 .settings
 bin/
-bin/jannis
 src/jeyj0/pixlengine/tests
 testres
 testres/img
