@@ -26,6 +26,15 @@ public class World {
 		tileFields = new HashSet<TileField>();
 		entities = new HashSet<Entity>();
 	}
+	
+	public HashSet<Tile> getTilesInRect(double x, double y, double width,
+			double height) {
+		HashSet<Tile> tiles = new HashSet<Tile>();
+		
+		
+		
+		return tiles;
+	}
 
 	public HashSet<TileField> getFieldsInRect(double x, double y, int width,
 			int height) {
@@ -95,13 +104,16 @@ public class World {
 		return entities.contains(e);
 	}
 
-	public HashSet<Entity> getEntitiesInRect(double x, double y, int width,
-			int height) {
+	public HashSet<Entity> getEntitiesInRect(double x, double y, double width,
+			double height) {
 		HashSet<Entity> list = new HashSet<Entity>();
 		Entity e;
 		Iterator<Entity> it = entities.iterator();
+		
 		while (it.hasNext()) {
 			e = it.next();
+			
+			
 
 			// if any of the entities corners is in the rectangle...
 			boolean is_left_x = e.getX() >= x && e.getX() < x + width;
@@ -121,6 +133,49 @@ public class World {
 		}
 
 		return list;
+	}
+	
+	class Rectangle {
+		
+		private double x;
+		private double y;
+		private double width;
+		private double height;
+		
+		Rectangle(double x, double y, double width, double height) {
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+		}
+		
+		public boolean intersects(Rectangle other) {
+			Rectangle left;
+			Rectangle right;
+			Rectangle top;
+			Rectangle bottom;
+			
+			if (this.x > other.x) {
+				left = this;
+				right = other;
+			} else {
+				left = other;
+				right = this;
+			}
+			
+			if (this.y > other.y) {
+				top = this;
+				bottom = other;
+			} else {
+				top = other;
+				bottom = this;
+			}
+			
+			if (left.x + left.width > right.x || bottom.y + bottom.height > top.y)
+				return true;
+			return false;
+		}
+		
 	}
 
 	public class TileField {

@@ -117,7 +117,7 @@ public class PixlEngine extends Canvas implements Runnable {
 	private Mob player;
 
 	/**
-	 * Input handler to use
+	 * Event-handler to use
 	 */
 	private InputHandler inputHandler;
 
@@ -169,13 +169,6 @@ public class PixlEngine extends Canvas implements Runnable {
 		setPreferredSize(new Dimension(canvasWidth, canvasHeight));
 
 		/*
-		 * Create instance objects
-		 */
-		this.imageLoader = new ImageLoader(this.resourcePath);
-		this.world = new World();
-		this.inputHandler = new InputHandler(this);
-
-		/*
 		 * Set up frame
 		 */
 		frame = new JFrame(this.projectName);
@@ -189,6 +182,13 @@ public class PixlEngine extends Canvas implements Runnable {
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+
+		/*
+		 * Create instance objects
+		 */
+		this.imageLoader = new ImageLoader(this.resourcePath);
+		this.world = new World();
+		this.inputHandler = new InputHandler(this);
 	}
 
 	/**
@@ -220,12 +220,14 @@ public class PixlEngine extends Canvas implements Runnable {
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
 
+		boolean shouldRender;
+
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
 
-			boolean shouldRender = true;
+			shouldRender = false;
 
 			while (delta >= 1) {
 				ticks++;
@@ -278,10 +280,12 @@ public class PixlEngine extends Canvas implements Runnable {
 		this.xOffset = x;
 		this.yOffset = y;
 
-		System.out.println("xOffset in pixels: " + (int) (xOffset * pxPerField)
-				+ " (" + (double) (xOffset * pxPerField) + ")");
-		System.out.println("yOffset in pixels: " + (int) (yOffset * pxPerField)
-				+ " (" + (double) (yOffset * pxPerField) + ")");
+		// System.out.println("xOffset in pixels: " + (int) (xOffset *
+		// pxPerField)
+		// + " (" + (double) (xOffset * pxPerField) + ")");
+		// System.out.println("yOffset in pixels: " + (int) (yOffset *
+		// pxPerField)
+		// + " (" + (double) (yOffset * pxPerField) + ")");
 	}
 
 	/**
@@ -292,10 +296,10 @@ public class PixlEngine extends Canvas implements Runnable {
 		 * center player if set
 		 */
 		if (player != null) {
-			xOffset = player.getX() + (double) player.getWidth() / 2
-					- (double) screenFieldWidth / 2;
-			yOffset = player.getY() + (double) player.getHeight() / 2
-					- (double) screenFieldHeight / 2;
+			setOffset(player.getX() + (double) player.getWidth() / 2
+					- (double) screenFieldWidth / 2, player.getY()
+					+ (double) player.getHeight() / 2
+					- (double) screenFieldHeight / 2);
 		}
 
 		BufferStrategy bs = getBufferStrategy();
@@ -431,7 +435,7 @@ public class PixlEngine extends Canvas implements Runnable {
 		 */
 		// If the value gets too high it would be transparent again, so the
 		// maximum is 255 (if the value gets higher than 255 it becomes 255)
-		int c3a = Math.min(255, c1a + c2a);
+		int c3a = c1a + c2a;
 		int c3r = (c1r * c1a + c2r * c2a) / c3a;
 		int c3g = (c1g * c1a + c2g * c2a) / c3a;
 		int c3b = (c1b * c1a + c2b * c2a) / c3a;
@@ -514,6 +518,13 @@ public class PixlEngine extends Canvas implements Runnable {
 	 */
 	public int getScaleFactor() {
 		return scaleFactor;
+	}
+
+	/**
+	 * @return The frame used to display with this engine
+	 */
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }
