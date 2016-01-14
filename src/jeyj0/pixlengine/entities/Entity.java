@@ -104,14 +104,14 @@ public abstract class Entity {
 			int[] start = new int[] { (int) Math.floor(x), (int) Math.floor(y) };
 
 			// test tile at left-top position
-			if (world.getTileAt(start[0], start[1]).isSolid())
+			if (world.getTileAt(start[0], start[1]) != null && world.getTileAt(start[0], start[1]).isSolid())
 				return false;
 
 			int[] end = new int[] { (int) Math.floor(x + getWidth()),
 					(int) Math.floor(y + getHeight()) };
 
 			// test tile at right-bottom position
-			if (world.getTileAt(end[0], end[1]).isSolid())
+			if (world.getTileAt(end[0], end[1]) != null && world.getTileAt(end[0], end[1]).isSolid())
 				return false;
 
 			// test tiles in-between start and end tile

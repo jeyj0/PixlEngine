@@ -97,4 +97,10 @@ public abstract class Tile {
 		return imgID;
 	}
 
+	/**
+	 * Called on every runtime tick. For overriding.
+	 */
+	public void tick() {
+	}
+
 }
