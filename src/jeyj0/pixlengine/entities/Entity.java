@@ -80,10 +80,11 @@ public abstract class Entity {
 		double newX = xPos + (double) x * speed;
 		double newY = yPos + (double) y * speed;
 
-		if (canMoveTo(newX, newY)) {
+		// divided into two so that the entity can slide at a wall
+		if (canMoveTo(newX, yPos))
 			xPos = newX;
+		if (canMoveTo(xPos, newY))
 			yPos = newY;
-		}
 	}
 
 	/**
@@ -100,20 +101,25 @@ public abstract class Entity {
 		// if canMoveThroughSolid then tiles are unnecessary
 		if (!canMoveThroughSolid) {
 
-			for (int loopX = 0; loopX <= getWidth(); loopX++) {
-				// TODO re-do condition
+			int[] start = new int[] { (int) Math.floor(x), (int) Math.floor(y) };
 
-				for (int loopY = 0; loopY <= getHeight(); loopY++) {
+			// test tile at left-top position
+			if (world.getTileAt(start[0], start[1]) != null && world.getTileAt(start[0], start[1]).isSolid())
+				return false;
 
-					int xCoord = (int) x + loopX;
-					int yCoord = (int) y + loopY;
+			int[] end = new int[] { (int) Math.floor(x + getWidth()),
+					(int) Math.floor(y + getHeight()) };
 
-					if (world.getTileAt(xCoord, yCoord) != null // handle
-																// NullPointerException
-							&& world.getTileAt(xCoord, yCoord).getSolid())
-						return false;
-				}
-			}
+			// test tile at right-bottom position
+			if (world.getTileAt(end[0], end[1]) != null && world.getTileAt(end[0], end[1]).isSolid())
+				return false;
+
+			// test tiles in-between start and end tile
+			/*
+			 * for (int lx = start[0]; lx <= end[0]; lx++) { for (int ly =
+			 * start[1]; ly <= end[1]; ly++) { if (world.getTileAt(lx,
+			 * ly).isSolid()) return false; } }
+			 */
 
 		}
 

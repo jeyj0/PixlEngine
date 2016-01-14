@@ -51,14 +51,14 @@ public abstract class Tile {
 	/**
 	 * @return Whether this tile is solid
 	 */
-	public boolean getSolid() {
+	public boolean isSolid() {
 		return solid;
 	}
 
 	/**
 	 * @return Whether this tile is transparent
 	 */
-	public boolean getSeeThrough() {
+	public boolean isSeeThrough() {
 		return seeThrough;
 	}
 
@@ -95,6 +95,12 @@ public abstract class Tile {
 	 */
 	public int getImageId() {
 		return imgID;
+	}
+
+	/**
+	 * Called on every runtime tick. For overriding.
+	 */
+	public void tick() {
 	}
 
 }
