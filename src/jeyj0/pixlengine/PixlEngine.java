@@ -7,11 +7,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.HashSet;
 
 import javax.swing.JFrame;
 
 import jeyj0.pixlengine.entities.Entity;
 import jeyj0.pixlengine.entities.Mob;
+import jeyj0.pixlengine.gui.GuiComponent;
 import jeyj0.pixlengine.in.InputHandler;
 import jeyj0.pixlengine.world.World;
 import jeyj0.pixlengine.world.World.TileField;
@@ -41,6 +43,11 @@ public class PixlEngine extends Canvas implements Runnable {
 	private boolean running;
 
 	/**
+	 * Standard count. This sets the value that is going to be used.
+	 */
+	private int ticksPerSecond = 60;
+
+	/**
 	 * Total count of ticks that already happened
 	 */
 	private int tickCount;
@@ -54,6 +61,8 @@ public class PixlEngine extends Canvas implements Runnable {
 	 * World containing everything for this game
 	 */
 	private World world;
+
+	private HashSet<GuiComponent> guiComponents;
 
 	/**
 	 * Amount of fields shown on the screen (horizontally)
@@ -135,6 +144,8 @@ public class PixlEngine extends Canvas implements Runnable {
 	 * @param scaleFactor
 	 *            The pixel display size (How many screen pixels are one game
 	 *            pixel)
+	 * @param resPath
+	 *            The path to all needed resources
 	 */
 	public PixlEngine(String projectName, int height, int width,
 			int pxPerField, int scaleFactor, String resPath) {
@@ -188,6 +199,7 @@ public class PixlEngine extends Canvas implements Runnable {
 		 */
 		this.imageLoader = new ImageLoader(this.resourcePath);
 		this.world = new World();
+		this.guiComponents = new HashSet<GuiComponent>();
 		this.inputHandler = new InputHandler(this);
 	}
 
@@ -212,7 +224,8 @@ public class PixlEngine extends Canvas implements Runnable {
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime();
-		double nsPerTick = 1000000000D / 60D; // Nano-seconds per tick
+		double nsPerTick = 1000000000D / ticksPerSecond; // Nano-seconds per
+															// tick
 
 		int ticks = 0;
 		int frames = 0;
@@ -319,6 +332,13 @@ public class PixlEngine extends Canvas implements Runnable {
 													// background-color
 			}
 		}
+		
+		/*
+		 * Render Back GuiComponents
+		 */
+		for (GuiComponent c : guiComponents)
+			if (!c.isFront())
+				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
 		/*
 		 * Render tiles
@@ -351,6 +371,13 @@ public class PixlEngine extends Canvas implements Runnable {
 
 			renderLoadedImage(loadedImage, startX, startY);
 		}
+		
+		/*
+		 * Render Front GuiComponents
+		 */
+		for (GuiComponent c : guiComponents)
+			if (c.isFront())
+				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
@@ -435,7 +462,7 @@ public class PixlEngine extends Canvas implements Runnable {
 		 */
 		// If the value gets too high it would be transparent again, so the
 		// maximum is 255 (if the value gets higher than 255 it becomes 255)
-		int c3a = c1a + c2a;
+		int c3a = (c1a + c2a);// > 255 ? 255 : (c1a + c2a);
 		int c3r = (c1r * c1a + c2r * c2a) / c3a;
 		int c3g = (c1g * c1a + c2g * c2a) / c3a;
 		int c3b = (c1b * c1a + c2b * c2a) / c3a;
@@ -471,6 +498,23 @@ public class PixlEngine extends Canvas implements Runnable {
 	 */
 	public World getWorld() {
 		return world;
+	}
+
+	/**
+	 * @return The Gui Components currently in this engine
+	 */
+	public HashSet<GuiComponent> getGuiComponents() {
+		return guiComponents;
+	}
+
+	/**
+	 * Adds a GuiComponent to the list of currently displayed components
+	 * 
+	 * @param component
+	 *            The component to add to the list
+	 */
+	public void addGuiComponent(GuiComponent component) {
+		guiComponents.add(component);
 	}
 
 	/**

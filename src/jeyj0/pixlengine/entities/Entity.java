@@ -101,18 +101,24 @@ public abstract class Entity {
 		// if canMoveThroughSolid then tiles are unnecessary
 		if (!canMoveThroughSolid) {
 
-			int[] start = new int[] { (int) Math.floor(x), (int) Math.floor(y) };
+			int[][] corners = new int[][] {
+					new int[] { (int) Math.floor(x), 
+							(int) Math.floor(y) },
+					
+					new int[] { (int) Math.floor(x + getWidth()),
+							(int) Math.floor(y + getHeight()) },
+					
+					new int[] { (int) Math.floor(x),
+							(int) Math.floor(y + getHeight()) },
+					
+					new int[] { (int) Math.floor(x + getWidth()),
+							(int) Math.floor(y) }, };
 
-			// test tile at left-top position
-			if (world.getTileAt(start[0], start[1]) != null && world.getTileAt(start[0], start[1]).isSolid())
-				return false;
-
-			int[] end = new int[] { (int) Math.floor(x + getWidth()),
-					(int) Math.floor(y + getHeight()) };
-
-			// test tile at right-bottom position
-			if (world.getTileAt(end[0], end[1]) != null && world.getTileAt(end[0], end[1]).isSolid())
-				return false;
+			for (int[] c : corners) {
+				if (world.getTileAt(c[0], c[1]) == null
+						|| world.getTileAt(c[0], c[1]).isSolid())
+					return false;
+			}
 
 			// test tiles in-between start and end tile
 			/*
@@ -160,6 +166,20 @@ public abstract class Entity {
 	 */
 	public double[] getBounds() {
 		return new double[] { xPos, yPos, (double) width, (double) height };
+	}
+
+	/**
+	 * @return The current speed of this entity
+	 */
+	public double getSpeed() {
+		return speed;
+	}
+
+	/**
+	 * @param speed the speed this entity should have
+	 */
+	public void setSpeed(double speed) {
+		this.speed = speed;
 	}
 
 	/**
