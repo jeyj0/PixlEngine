@@ -27,11 +27,18 @@ public class World {
 		entities = new HashSet<Entity>();
 	}
 	
+	public HashSet<Tile> getAllTiles() {
+		HashSet<Tile> tiles = new HashSet<Tile>();
+		for (TileField f : tileFields)
+			tiles.add(f.getTile());
+		return tiles;
+	}
+	
 	public HashSet<Tile> getTilesInRect(double x, double y, double width,
 			double height) {
 		HashSet<Tile> tiles = new HashSet<Tile>();
 		
-		
+		// TODO
 		
 		return tiles;
 	}
@@ -134,49 +141,6 @@ public class World {
 
 		return list;
 	}
-	
-	class Rectangle {
-		
-		private double x;
-		private double y;
-		private double width;
-		private double height;
-		
-		Rectangle(double x, double y, double width, double height) {
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-		}
-		
-		public boolean intersects(Rectangle other) {
-			Rectangle left;
-			Rectangle right;
-			Rectangle top;
-			Rectangle bottom;
-			
-			if (this.x > other.x) {
-				left = this;
-				right = other;
-			} else {
-				left = other;
-				right = this;
-			}
-			
-			if (this.y > other.y) {
-				top = this;
-				bottom = other;
-			} else {
-				top = other;
-				bottom = this;
-			}
-			
-			if (left.x + left.width > right.x || bottom.y + bottom.height > top.y)
-				return true;
-			return false;
-		}
-		
-	}
 
 	public class TileField {
 
@@ -205,7 +169,8 @@ public class World {
 		public boolean setTile(Tile t) {
 			if (tile != null)
 				return false;
-			this.tile = t;
+			tile = t;
+			t.setPos(x, y);
 			return true;
 		}
 
@@ -214,7 +179,7 @@ public class World {
 		}
 
 		public void removeTile() {
-			this.tile = null;
+			tile = null;
 		}
 
 	}

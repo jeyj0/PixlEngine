@@ -63,20 +63,6 @@ public abstract class Tile {
 	}
 
 	/**
-	 * @return The x-coordinate of this tile
-	 */
-	public int getX() {
-		return x;
-	}
-
-	/**
-	 * @return The y-coordinate of this tile
-	 */
-	public int getY() {
-		return y;
-	}
-
-	/**
 	 * Sets the position of this tile
 	 * 
 	 * @param x

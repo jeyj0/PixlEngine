@@ -15,6 +15,7 @@ import jeyj0.pixlengine.entities.Entity;
 import jeyj0.pixlengine.entities.Mob;
 import jeyj0.pixlengine.gui.GuiComponent;
 import jeyj0.pixlengine.in.InputHandler;
+import jeyj0.pixlengine.tiles.Tile;
 import jeyj0.pixlengine.world.World;
 import jeyj0.pixlengine.world.World.TileField;
 
@@ -274,6 +275,10 @@ public class PixlEngine extends Canvas implements Runnable {
 	 * Executes a game tick. That is recalculating the world.
 	 */
 	public void tick() {
+		// tick all tiles
+		for (Tile t : getWorld().getAllTiles())
+			t.tick();
+
 		// tick all entities
 		for (Entity e : getWorld().getAllEntities())
 			e.tick();
@@ -332,7 +337,7 @@ public class PixlEngine extends Canvas implements Runnable {
 													// background-color
 			}
 		}
-		
+
 		/*
 		 * Render Back GuiComponents
 		 */
@@ -371,7 +376,7 @@ public class PixlEngine extends Canvas implements Runnable {
 
 			renderLoadedImage(loadedImage, startX, startY);
 		}
-		
+
 		/*
 		 * Render Front GuiComponents
 		 */
@@ -562,6 +567,13 @@ public class PixlEngine extends Canvas implements Runnable {
 	 */
 	public int getScaleFactor() {
 		return scaleFactor;
+	}
+
+	/**
+	 * @return The amount of game pixels that make up one field in the game
+	 */
+	public int getPixelsPerField() {
+		return pxPerField;
 	}
 
 	/**
