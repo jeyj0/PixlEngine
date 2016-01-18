@@ -332,6 +332,13 @@ public class PixlEngine extends Canvas implements Runnable {
 													// background-color
 			}
 		}
+		
+		/*
+		 * Render Back GuiComponents
+		 */
+		for (GuiComponent c : guiComponents)
+			if (!c.isFront())
+				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
 		/*
 		 * Render tiles
@@ -366,10 +373,11 @@ public class PixlEngine extends Canvas implements Runnable {
 		}
 		
 		/*
-		 * Render GuiComponents
+		 * Render Front GuiComponents
 		 */
 		for (GuiComponent c : guiComponents)
-			renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
+			if (c.isFront())
+				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
@@ -454,7 +462,7 @@ public class PixlEngine extends Canvas implements Runnable {
 		 */
 		// If the value gets too high it would be transparent again, so the
 		// maximum is 255 (if the value gets higher than 255 it becomes 255)
-		int c3a = c1a + c2a;
+		int c3a = (c1a + c2a);// > 255 ? 255 : (c1a + c2a);
 		int c3r = (c1r * c1a + c2r * c2a) / c3a;
 		int c3g = (c1g * c1a + c2g * c2a) / c3a;
 		int c3b = (c1b * c1a + c2b * c2a) / c3a;
