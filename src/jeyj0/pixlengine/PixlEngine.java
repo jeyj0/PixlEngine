@@ -351,9 +351,11 @@ public class PixlEngine extends Canvas implements Runnable {
 			int startX = (int) ((f.getX() - xOffset) * pxPerField);
 			int startY = (int) ((f.getY() - yOffset) * pxPerField);
 
-			// TODO: edit this to actually take only the needed part of the
-			// image!!! Note: startX and startY are relative to the screen, not
-			// to the loadedImage
+			/*
+			 * TODO Edit this to actually take only the needed part of the
+			 * image!!! Note: startX and startY are relative to the screen, not
+			 * to the loadedImage
+			 */
 			loadedImage = loadedImage.getInterval(0, 0, -1, -1);
 			renderLoadedImage(loadedImage, startX, startY);
 		}
