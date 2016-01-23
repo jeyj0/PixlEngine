@@ -63,19 +63,6 @@ public abstract class Tile {
 	}
 
 	/**
-	 * Sets the position of this tile
-	 * 
-	 * @param x
-	 *            The x-coordinate
-	 * @param y
-	 *            The y-coordinate
-	 */
-	public void setPos(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	/**
 	 * @return The loaded image id to use for displaying this tile. Can be
 	 *         overridden for animations.
 	 */
@@ -84,9 +71,69 @@ public abstract class Tile {
 	}
 
 	/**
-	 * Called on every runtime tick. For overriding.
+	 * Warning: This should not be called from outside! Call this over
+	 * world-object!
+	 * 
+	 * Set the horizontal position of this tile
+	 * 
+	 * @param x
+	 *            The horizontal coordinate
 	 */
-	public void tick() {
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * The horizontal coordinate of this Tile's position
+	 * 
+	 * @return int The coordinate
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * Warning: This should not be called from outside! Call this over
+	 * world-object!
+	 * 
+	 * Set the vertical position of this tile
+	 * 
+	 * @param x
+	 *            The vertical coordinate
+	 */
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	/**
+	 * The vertical coordinate of this Tile's position
+	 * 
+	 * @return int The coordinate
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * Sets the position of this tile
+	 * 
+	 * @param x
+	 *            The x-coordinate
+	 * @param y
+	 *            The y-coordinate
+	 */
+	public void setPos(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+
+	/**
+	 * The position of this tile
+	 * 
+	 * @return int[2]{x,y} The Position of this tile
+	 */
+	public int[] getPos() {
+		return new int[] { x, y };
 	}
 
 }

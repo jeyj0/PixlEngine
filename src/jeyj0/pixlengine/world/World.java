@@ -38,7 +38,7 @@ public class World {
 			double height) {
 		HashSet<Tile> tiles = new HashSet<Tile>();
 		
-		// TODO
+		// TODO Only get Tiles in rectangle
 		
 		return tiles;
 	}
