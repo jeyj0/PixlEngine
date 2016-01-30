@@ -8,14 +8,9 @@ package jeyj0.pixlengine.tiles;
 public abstract class Tile {
 
 	/**
-	 * x-coordinate of this Tile
+	 * Position of this Tile
 	 */
-	private int x;
-
-	/**
-	 * y-coordinate of this Tile
-	 */
-	private int y;
+	private int[] pos;
 
 	/**
 	 * Whether or not this Tile is solid. This toggles collisions.
@@ -42,10 +37,12 @@ public abstract class Tile {
 	 * @param isSeeThrough
 	 *            Whether or not this tile is transparent
 	 */
-	public Tile(int imgID, boolean isSolid, boolean isSeeThrough) {
+	public Tile(int imgID, boolean isSolid, boolean isSeeThrough, int xPos,
+			int yPos) {
 		this.imgID = imgID;
 		this.solid = isSolid;
 		this.seeThrough = isSeeThrough;
+		this.pos = new int[] { xPos, yPos };
 	}
 
 	/**
@@ -80,7 +77,7 @@ public abstract class Tile {
 	 *            The horizontal coordinate
 	 */
 	public void setX(int x) {
-		this.x = x;
+		pos[0] = x;
 	}
 
 	/**
@@ -89,7 +86,7 @@ public abstract class Tile {
 	 * @return int The coordinate
 	 */
 	public int getX() {
-		return x;
+		return pos[0];
 	}
 
 	/**
@@ -102,7 +99,7 @@ public abstract class Tile {
 	 *            The vertical coordinate
 	 */
 	public void setY(int y) {
-		this.y = y;
+		pos[1] = y;
 	}
 
 	/**
@@ -111,7 +108,7 @@ public abstract class Tile {
 	 * @return int The coordinate
 	 */
 	public int getY() {
-		return y;
+		return pos[1];
 	}
 
 	/**
@@ -128,12 +125,20 @@ public abstract class Tile {
 	}
 
 	/**
+	 * Sets the position array for this tile to null, so it can't be mistakenly
+	 * rendered as a Tile that is still in the world.
+	 */
+	public void setPosToNull() {
+		this.pos = null;
+	}
+
+	/**
 	 * The position of this tile
 	 * 
 	 * @return int[2]{x,y} The Position of this tile
 	 */
 	public int[] getPos() {
-		return new int[] { x, y };
+		return pos;
 	}
 
 }

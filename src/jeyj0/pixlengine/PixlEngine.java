@@ -15,8 +15,8 @@ import jeyj0.pixlengine.entities.Entity;
 import jeyj0.pixlengine.entities.Mob;
 import jeyj0.pixlengine.gui.GuiComponent;
 import jeyj0.pixlengine.in.InputHandler;
+import jeyj0.pixlengine.tiles.Tile;
 import jeyj0.pixlengine.world.World;
-import jeyj0.pixlengine.world.World.TileField;
 
 /**
  * Main Engine class. Use this to run a (new) game.
@@ -326,6 +326,8 @@ public class PixlEngine extends Canvas implements Runnable {
 		/*
 		 * edit image here
 		 */
+
+		// set general black background
 		for (int x = 0; x < xPixels; x++) {
 			for (int y = 0; y < yPixels; y++) {
 				colorPixel(0xff000000, x, y, true); // 0xAARRGGBB
@@ -333,23 +335,19 @@ public class PixlEngine extends Canvas implements Runnable {
 			}
 		}
 
-		/*
-		 * Render Back GuiComponents
-		 */
+		// Render Back GuiComponents
 		for (GuiComponent c : guiComponents)
 			if (!c.isFront())
 				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
-		/*
-		 * Render tiles
-		 */
-		for (TileField f : getWorld().getFieldsInRect(xOffset, yOffset,
+		// Render tiles
+		for (Tile tile : getWorld().getTilesInRect(xOffset, yOffset,
 				screenFieldWidth, screenFieldHeight)) {
-			LoadedImage loadedImage = imageLoader.getLoadedImage(f.getTile()
+			LoadedImage loadedImage = imageLoader.getLoadedImage(tile
 					.getImageId());
 
-			int startX = (int) ((f.getX() - xOffset) * pxPerField);
-			int startY = (int) ((f.getY() - yOffset) * pxPerField);
+			int startX = (int) ((tile.getX() - xOffset) * pxPerField);
+			int startY = (int) ((tile.getY() - yOffset) * pxPerField);
 
 			/*
 			 * TODO Edit this to actually take only the needed part of the
@@ -360,9 +358,7 @@ public class PixlEngine extends Canvas implements Runnable {
 			renderLoadedImage(loadedImage, startX, startY);
 		}
 
-		/*
-		 * Render entities
-		 */
+		// Render entities
 		for (Entity e : getWorld().getEntitiesInRect(xOffset, yOffset,
 				screenFieldWidth, screenFieldHeight)) {
 			LoadedImage loadedImage = imageLoader
@@ -374,15 +370,15 @@ public class PixlEngine extends Canvas implements Runnable {
 			renderLoadedImage(loadedImage, startX, startY);
 		}
 
-		/*
-		 * Render Front GuiComponents
-		 */
+		// Render Front GuiComponents
 		for (GuiComponent c : guiComponents)
 			if (c.isFront())
 				renderLoadedImage(c.getGraphics(), c.getLeft(), c.getTop());
 
+		// put the image back together
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
+		// show the image
 		g.dispose();
 		bs.show();
 	}
