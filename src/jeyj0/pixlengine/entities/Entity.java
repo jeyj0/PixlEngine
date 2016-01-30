@@ -12,7 +12,7 @@ public abstract class Entity {
 	/**
 	 * A world reference for the world the entity is in
 	 */
-	private World world;
+	protected World world;
 
 	/**
 	 * The x-Coordinate of this entity

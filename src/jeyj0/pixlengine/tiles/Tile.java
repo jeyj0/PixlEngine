@@ -8,14 +8,9 @@ package jeyj0.pixlengine.tiles;
 public abstract class Tile {
 
 	/**
-	 * x-coordinate of this Tile
+	 * Position of this Tile
 	 */
-	private int x;
-
-	/**
-	 * y-coordinate of this Tile
-	 */
-	private int y;
+	private int[] pos;
 
 	/**
 	 * Whether or not this Tile is solid. This toggles collisions.
@@ -42,10 +37,12 @@ public abstract class Tile {
 	 * @param isSeeThrough
 	 *            Whether or not this tile is transparent
 	 */
-	public Tile(int imgID, boolean isSolid, boolean isSeeThrough) {
+	public Tile(int imgID, boolean isSolid, boolean isSeeThrough, int xPos,
+			int yPos) {
 		this.imgID = imgID;
 		this.solid = isSolid;
 		this.seeThrough = isSeeThrough;
+		this.pos = new int[] { xPos, yPos };
 	}
 
 	/**
@@ -63,17 +60,55 @@ public abstract class Tile {
 	}
 
 	/**
-	 * @return The x-coordinate of this tile
+	 * @return The loaded image id to use for displaying this tile. Can be
+	 *         overridden for animations.
 	 */
-	public int getX() {
-		return x;
+	public int getImageId() {
+		return imgID;
 	}
 
 	/**
-	 * @return The y-coordinate of this tile
+	 * Warning: This should not be called from outside! Call this over
+	 * world-object!
+	 * 
+	 * Set the horizontal position of this tile
+	 * 
+	 * @param x
+	 *            The horizontal coordinate
+	 */
+	public void setX(int x) {
+		pos[0] = x;
+	}
+
+	/**
+	 * The horizontal coordinate of this Tile's position
+	 * 
+	 * @return int The coordinate
+	 */
+	public int getX() {
+		return pos[0];
+	}
+
+	/**
+	 * Warning: This should not be called from outside! Call this over
+	 * world-object!
+	 * 
+	 * Set the vertical position of this tile
+	 * 
+	 * @param x
+	 *            The vertical coordinate
+	 */
+	public void setY(int y) {
+		pos[1] = y;
+	}
+
+	/**
+	 * The vertical coordinate of this Tile's position
+	 * 
+	 * @return int The coordinate
 	 */
 	public int getY() {
-		return y;
+		return pos[1];
 	}
 
 	/**
@@ -85,22 +120,25 @@ public abstract class Tile {
 	 *            The y-coordinate
 	 */
 	public void setPos(int x, int y) {
-		this.x = x;
-		this.y = y;
+		setX(x);
+		setY(y);
 	}
 
 	/**
-	 * @return The loaded image id to use for displaying this tile. Can be
-	 *         overridden for animations.
+	 * Sets the position array for this tile to null, so it can't be mistakenly
+	 * rendered as a Tile that is still in the world.
 	 */
-	public int getImageId() {
-		return imgID;
+	public void setPosToNull() {
+		this.pos = null;
 	}
 
 	/**
-	 * Called on every runtime tick. For overriding.
+	 * The position of this tile
+	 * 
+	 * @return int[2]{x,y} The Position of this tile
 	 */
-	public void tick() {
+	public int[] getPos() {
+		return pos;
 	}
 
 }
